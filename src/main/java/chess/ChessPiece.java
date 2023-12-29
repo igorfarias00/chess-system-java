@@ -1,5 +1,6 @@
 package chess;
 
+import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 
@@ -11,8 +12,9 @@ public class ChessPiece extends Piece {
 
     // ======================================================================================
 
-    public ChessPiece(Position position) {
-        super(position);
+    public ChessPiece(Board board, Color color) {
+        super(board);
+        this.color = color;
     }
 
     // ======================================================================================
@@ -42,7 +44,7 @@ public class ChessPiece extends Piece {
         return color;
     }
 
-    public void setColor(Color color) {
+    private void setColor(Color color) {
         this.color = color;
     }
 

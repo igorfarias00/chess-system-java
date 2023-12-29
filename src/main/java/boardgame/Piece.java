@@ -1,13 +1,23 @@
 package boardgame;
 
 public class Piece {
+
     protected Position position;
+
+    private Board board;
 
     // =============================================================================
 
-    public Piece(Position position) {
-        this.position = position;
+
+    public Piece(Board board) {
+        this.board = board;
+        this.position = null;
+
     }
+
+//    public Piece(Position position) {
+//        this.position = position;
+//    }
 
     // ============================================================================
 
@@ -34,5 +44,13 @@ public class Piece {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    protected Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }
