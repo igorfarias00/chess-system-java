@@ -10,6 +10,10 @@ public class ChessPosition {
     // ========================================================================
 
     public ChessPosition(char column, Integer row) {
+        if(column < 'a' || column > 'h' || row < 1 || row > 8){
+            throw new ChessException("Erro instantiating ChessPosition. Valid values are from a1 to h8.");
+        }
+
         this.column = column;
         this.row = row;
     }
@@ -19,21 +23,26 @@ public class ChessPosition {
 
     protected Position toPosition(){
 
-        return null;
+        return new Position(8 - row, column - 'a');
     }
 
-    protected ChessPosition fromPosition(Position position){
+    protected static ChessPosition fromPosition(Position position){
 
-        return null;
+        return new ChessPosition( (char)('a' - position.getColumn()) , 8 - position.getRow() );
     }
 
+
+    @Override
+    public String toString(){
+        return "" + column + row;
+    }
 
     // ++++++++++++++++++++++++++++++++++-------------------------------------
     public char getColumn() {
         return column;
     }
 
-    public void setColumn(char column) {
+    private void setColumn(char column) {
         this.column = column;
     }
 
@@ -41,7 +50,7 @@ public class ChessPosition {
         return row;
     }
 
-    public void setRow(Integer row) {
+    private void setRow(Integer row) {
         this.row = row;
     }
 }
