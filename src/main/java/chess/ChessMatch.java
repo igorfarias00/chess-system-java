@@ -64,7 +64,7 @@ public class ChessMatch {
     private void initialSetup(){
         placeWhites();
         placeBlacks();
-        placeNewPiece('d', 4, new Bishop(board, Color.WHITE));
+        placeNewPiece('d', 4, new Knight(board, Color.WHITE));
 
     }
 
