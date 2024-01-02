@@ -6,8 +6,11 @@ import chess.ChessPosition;
 import chess.Color;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class UI {
 
@@ -35,9 +38,12 @@ public class UI {
         System.out.flush();
     }
 
-    public static void printMatch(ChessMatch chessMatch){
+    public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured){
+        printCapturedWhitePieces(captured);
         printBoard(chessMatch.getPieces());
+        printCapturedBlackPieces(captured);
         System.out.println();
+
         System.out.println("Turn: " + chessMatch.getTurn());
         System.out.println("Waiting player: " + chessMatch.getCurentPlayer());
 
@@ -135,6 +141,48 @@ public class UI {
             throw new InputMismatchException("Error reading ChessPosition. valid values are from a1 to h8. " + e);
 
         }
+
+
+    }
+
+    private static void printCapturedPieces(List<ChessPiece> capturadas){
+        List<ChessPiece> brancas = capturadas.stream().filter(x -> x.getColor() == Color.WHITE).toList();
+        List<ChessPiece> pretas = capturadas.stream().filter(x -> x.getColor() == Color.BLACK).toList();
+
+        System.out.println("Captured pieces: ");
+
+        System.out.println("Brancas: ");
+        System.out.print(ANSI_BLACK + ANSI_WHITE_BACKGROUND);
+        System.out.println(Arrays.toString(brancas.toArray()) + ANSI_RESET);
+
+        System.out.println("||======================================||");
+
+        System.out.println("Pretas: ");
+        System.out.print(ANSI_WHITE + ANSI_BLACK_BACKGROUND);
+        System.out.println(Arrays.toString(pretas.toArray()) + ANSI_RESET) ;
+
+
+    }
+
+    private static void printCapturedWhitePieces(List<ChessPiece> capturadas){
+        List<ChessPiece> brancas = capturadas.stream().filter(x -> x.getColor() == Color.WHITE).toList();
+
+        System.out.println("Peças Brancas Capturadas: ");
+        System.out.print(ANSI_BLACK + ANSI_WHITE_BACKGROUND);
+        System.out.println(Arrays.toString(brancas.toArray()) + ANSI_RESET);
+
+
+
+    }
+
+    private static void printCapturedBlackPieces(List<ChessPiece> capturadas){
+        List<ChessPiece> pretas = capturadas.stream().filter(x -> x.getColor() == Color.BLACK).toList();
+
+
+        System.out.println("Peças Pretas Capturadas: ");
+        System.out.print(ANSI_WHITE + ANSI_BLACK_BACKGROUND);
+        System.out.println(Arrays.toString(pretas.toArray()) + ANSI_RESET) ;
+
 
 
     }

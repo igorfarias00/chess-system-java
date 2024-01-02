@@ -6,6 +6,9 @@ import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessMatch {
 
     private Board board;
@@ -21,6 +24,11 @@ public class ChessMatch {
     private ChessPiece enPassantVulnerable;
 
     private ChessPiece promoted;
+
+    private List<Piece> piecesOnTheBoard = new ArrayList<>();
+
+    private List<Piece> capturedPieces = new ArrayList<>();
+
 
 
     // =========================================================================
@@ -50,7 +58,7 @@ public class ChessMatch {
 
     private void nextTurn(){
         turn++;
-        curentPlayer  = (curentPlayer == Color.WHITE) ? Color.BLACK : Color.BLACK;
+        curentPlayer  = (curentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     private void initialSetup(){
@@ -61,6 +69,7 @@ public class ChessMatch {
 
     private void placeNewPiece(char column, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
+        piecesOnTheBoard.add(piece);
     }
 
     private void placeWhites(){
@@ -127,6 +136,11 @@ public class ChessMatch {
         Piece capturedPiece = board.removePiece(target);
 
         board.placePiece(p, target);
+
+        if(capturedPiece != null){
+            piecesOnTheBoard.remove(capturedPiece);
+            capturedPieces.add(capturedPiece);
+        }
 
         return capturedPiece;
     }
