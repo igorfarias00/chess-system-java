@@ -4,6 +4,7 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -28,7 +29,13 @@ public class UI {
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static void printBoard(ChessPiece[][] pieces){
+
         System.out.println("  _____________________");
 
         for(int i=0; i< pieces.length; i++){
@@ -45,6 +52,29 @@ public class UI {
         System.out.println("     A B C D E F G H");
     }
 
+    public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves){
+
+        System.out.println("  _____________________");
+
+        for(int i=0; i< pieces.length; i++){
+            System.out.print(8 - i + " || ");
+
+            for (int j = 0; j < pieces[i].length; j++){
+                if(possibleMoves[i][j]) {
+                    printPiece(pieces[i][j], true);
+                } else {
+                    printPiece(pieces[i][j], false);
+                }
+
+            }
+
+            System.out.println("||");
+        }
+        System.out.println("  ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+        System.out.println("     A B C D E F G H");
+    }
+
+
     private static void printPiece(ChessPiece piece){
         if(piece == null){
             System.out.print("-");
@@ -54,6 +84,29 @@ public class UI {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);
             } else {
                 System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+            }
+
+        }
+
+        System.out.print(" ");
+    }
+    private static void printPiece(ChessPiece piece, boolean possibleMove){
+        if(piece == null && !possibleMove){
+            System.out.print("-");
+
+        } else if (piece == null && possibleMove){
+            System.out.print(ANSI_BLUE_BACKGROUND + "-" + ANSI_RESET);
+
+        } else {
+            if( piece.getColor() == Color.WHITE && !possibleMove) {
+                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
+            } else if(piece.getColor() == Color.WHITE && possibleMove) {
+                System.out.print(ANSI_BLUE_BACKGROUND + piece + ANSI_RESET);
+
+            } else if( piece.getColor() == Color.BLACK && !possibleMove){
+                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+            } else {
+                System.out.print(ANSI_BLUE_BACKGROUND + piece + ANSI_RESET);
             }
 
         }

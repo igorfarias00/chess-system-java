@@ -4,7 +4,7 @@ import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 
-public class ChessPiece extends Piece {
+public abstract class ChessPiece extends Piece {
     private Color color;
 
     private Integer moveCount;
@@ -26,8 +26,9 @@ public class ChessPiece extends Piece {
     }
 
     protected boolean isThereOpponentPiece(Position position){
+        ChessPiece piece = (ChessPiece) getBoard().piece(position);
 
-        return false;
+        return piece != null && piece.getColor() != color;
     }
 
     protected void increaseMoveCount(){
