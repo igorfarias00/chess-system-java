@@ -25,7 +25,7 @@ public class Rook extends ChessPiece {
         p.setValues(position.getRow() - 1, position.getColumn());
 
         // testa se existem movimentos possiveis para cima
-        // ci,a
+        // cima
         while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)){
             // marca como movimento possivel
             mat[p.getRow()][p.getColumn()] = true;

@@ -1,5 +1,6 @@
 package application;
 
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
@@ -34,6 +35,14 @@ public class UI {
         System.out.flush();
     }
 
+    public static void printMatch(ChessMatch chessMatch){
+        printBoard(chessMatch.getPieces());
+        System.out.println();
+        System.out.println("Turn: " + chessMatch.getTurn());
+        System.out.println("Waiting player: " + chessMatch.getCurentPlayer());
+
+    }
+
     public static void printBoard(ChessPiece[][] pieces){
 
         System.out.println("  _____________________");
@@ -60,12 +69,7 @@ public class UI {
             System.out.print(8 - i + " || ");
 
             for (int j = 0; j < pieces[i].length; j++){
-                if(possibleMoves[i][j]) {
-                    printPiece(pieces[i][j], true);
-                } else {
-                    printPiece(pieces[i][j], false);
-                }
-
+                printPiece(pieces[i][j], possibleMoves[i][j]);
             }
 
             System.out.println("||");
@@ -80,10 +84,10 @@ public class UI {
             System.out.print("-");
 
         } else {
-            if( piece.getColor() == Color.WHITE) {
-                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
+            if( piece.getColor() == Color.WHITE ) {
+                System.out.print(ANSI_BLACK  + ANSI_WHITE_BACKGROUND + piece + ANSI_RESET);
             } else {
-                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+                System.out.print(ANSI_WHITE + ANSI_BLACK_BACKGROUND +piece + ANSI_RESET);
             }
 
         }
@@ -91,24 +95,30 @@ public class UI {
         System.out.print(" ");
     }
     private static void printPiece(ChessPiece piece, boolean possibleMove){
-        if(piece == null && !possibleMove){
+        if(possibleMove){
+            System.out.print(ANSI_BLUE_BACKGROUND);
+        }
+
+        if(piece == null){
             System.out.print("-");
 
-        } else if (piece == null && possibleMove){
-            System.out.print(ANSI_BLUE_BACKGROUND + "-" + ANSI_RESET);
-
-        } else {
-            if( piece.getColor() == Color.WHITE && !possibleMove) {
-                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
-            } else if(piece.getColor() == Color.WHITE && possibleMove) {
-                System.out.print(ANSI_BLUE_BACKGROUND + piece + ANSI_RESET);
-
-            } else if( piece.getColor() == Color.BLACK && !possibleMove){
-                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+        } else if(!possibleMove){
+            if( piece.getColor() == Color.WHITE ) {
+                System.out.print(ANSI_BLACK  + ANSI_WHITE_BACKGROUND + piece + ANSI_RESET);
             } else {
-                System.out.print(ANSI_BLUE_BACKGROUND + piece + ANSI_RESET);
+                System.out.print(ANSI_WHITE + ANSI_BLACK_BACKGROUND +piece + ANSI_RESET);
             }
 
+        } else {
+            if( piece.getColor() == Color.WHITE ) {
+                System.out.print(ANSI_BLACK  + piece + ANSI_RESET);
+            } else {
+                System.out.print(ANSI_WHITE  +piece + ANSI_RESET);
+            }
+        }
+
+        if(possibleMove){
+            System.out.print(ANSI_RESET);
         }
 
         System.out.print(" ");
