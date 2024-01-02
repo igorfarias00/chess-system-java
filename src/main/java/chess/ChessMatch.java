@@ -96,6 +96,38 @@ public class ChessMatch {
         return false;
     }
 
+    private boolean testCheckMate(Color color){
+        if(!testCheck(color)){
+            return false;
+        }
+
+        Position kingPosition = king(color).getChessPosition().toPosition();
+        List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).toList();
+        List<Piece> opponentPieces = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == opponent(color)).toList();
+
+        for (Piece p: list) {
+            boolean[][] mat = p.possibleMoves();
+            for(int i=0; i< board.getRows(); i++){
+                for (int j = 0; j < board.getColumns(); j++){
+                    if(mat[i][j]){
+                        Position source = ((ChessPiece) p).getChessPosition().toPosition();
+                        Position target = new Position(i, j);
+                        Piece capturedPìece = makeMove(source, target);
+                        boolean testCheck = testCheck(color);
+                        undoMove(source, target, capturedPìece);
+                        if(!testCheck){
+                            return false;
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        return true;
+    }
+
 
     private void placeNewPiece(char column, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
@@ -160,7 +192,11 @@ public class ChessMatch {
 
         check = testCheck(opponent(curentPlayer));
 
-        nextTurn();
+        if(testCheckMate(opponent(curentPlayer))){
+            checkMate = true;
+        } else {
+            nextTurn();
+        }
 
         return (ChessPiece) capturedPiece;
     }
